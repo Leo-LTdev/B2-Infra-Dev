@@ -12,10 +12,9 @@
 
         <!-- Scripts -->
         @routes
-        @vite(['resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
-        @inertia
+        <h1>bien sur Laravel</h1>
     </body>
 </html>
