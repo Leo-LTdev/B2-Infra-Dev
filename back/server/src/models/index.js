@@ -1,42 +1,33 @@
 const sequelize = require('../config/db');
 const User = require('./User');
-const Project = require('./Project');
-const Task = require('./Task');
+const Property = require('./Property');
+const Agency = require('./Agency');
+const Sale = require('./Sale');
 
 
-Project.belongsTo(User, {
-    foreignKey: 'owner_id', 
-    as: 'owner'
-});
+// ============================================================================
+// 3. CONFIGURATION DES RELATIONS (Reflet exact de tes contraintes SQL)
+// ============================================================================
 
-User.hasMany(Project, {
-    foreignKey: 'owner_id',
-    as: 'ownedProjects'
-});
-
-Task.belongsTo(User, { 
-  foreignKey: 'assigneTo',    
-  as: 'assignPseudo'
-});
+Agency.hasMany(User, { foreignKey: 'agency_id', onDelete: 'SET NULL' });
+User.belongsTo(Agency, { foreignKey: 'agency_id' });
 
 
-Project.belongsToMany(User, {
-    through: 'projects_users', // nom de la table sans oublier le timestamps false 
-    foreignKey: 'project_id', 
-    otherKey: 'user_id',      
-    as: 'participants'         // Allias
-});
+Agency.hasMany(Property, { foreignKey: 'agency_id', onDelete: 'RESTRICT' });
+Property.belongsTo(Agency, { foreignKey: 'agency_id' });
 
-User.belongsToMany(Project, {
-    through: 'projects_users',
-    foreignKey: 'user_id',     
-    otherKey: 'project_id',    
-    as: 'participatedProjects' 
-});
+
+Property.hasOne(Sale, { foreignKey: 'property_id', onDelete: 'RESTRICT' });
+Sale.belongsTo(Property, { foreignKey: 'property_id' });
+
+
+User.hasMany(Sale, { foreignKey: 'agent_id', onDelete: 'RESTRICT' });
+Sale.belongsTo(User, { foreignKey: 'agent_id' });
 
 module.exports = {
-    sequelize,
-    User,
-    Project,
-    Task
+  sequelize,
+  Agency,
+  User,
+  Property,
+  Sale
 };

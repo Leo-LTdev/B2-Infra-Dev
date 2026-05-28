@@ -2,12 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
-const projectRoutes = require('./routes/projectRoutes');
-const taskRoutes = require('./routes/taskRoutes');
-const userRoutes = require('./routes/userRoutes')
 
-const authMiddleware = require('./middlewares/authMiddleware');
 
 const app = express();
 
@@ -22,8 +17,6 @@ sequelize.authenticate()
 
 // Routes
 app.use('/auth', authRoutes);
-
-app.use(authMiddleware); // middleware d'authentification
 
 app.use('/project', projectRoutes);
 app.use('/task', taskRoutes);
