@@ -1,0 +1,22 @@
+{
+    "name": "mon-api-serveur",
+    "version": "1.0.0",
+    "description": "Serveur Node.js pour projet client-serveur",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js"
+    },
+    "dependencies": {
+        "bcrypt": "^6.0.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.3",
+        "mysql2": "^3.22.3",
+        "sequelize": "^6.37.8"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
+    }
+}

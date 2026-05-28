@@ -1,0 +1,48 @@
+services:
+  # BDD
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql # Persistance des données
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql # init avec 2 utilisateurs de test
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+      interval: 10s   # Test toutes les 10 secondes
+      timeout: 10s    # Attend 10 secondes max pour une réponse
+      retries: 10    # Réessaie 10 fois si echec
+
+  # SERVER
+  server:
+    build: ./server
+    container_name: node_server
+    restart: always
+    env_file:
+      - .env
+    ports:
+    # Equivalent de "5000:5000" mais en variable d'environement
+      - "${NODE_LOCAL_PORT}:${NODE_DOCKER_PORT}"
+    volumes:
+      - ./server:/app 
+      - /app/node_modules # Empèche docker d'écreaser node modules
+    environment:
+      port: ${NODE_DOCKER_PORT} # écoute port du conteneur docker
+      DB_HOST: db
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE}
+    depends_on:
+      db:
+        condition: service_healthy  # attend que la BDD est démarré
+volumes:
+  db_data:
