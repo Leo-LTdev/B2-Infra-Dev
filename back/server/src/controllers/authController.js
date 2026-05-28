@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -43,10 +43,18 @@ exports.login = async (req, res) => {
 
 exports.register = async (req, res) => {
    try {
-        const { email,pseudo , password, confirmPassword } = req.body;
+        const {
+            lastname,
+            firstname, 
+            email,
+            password, 
+            confirmPassword,
+            role,
+            agencyId
+         } = req.body;
 
-        if (!email || !pseudo || !password || !confirmPassword) {
-            return res.status(400).json({ message: "Tous les champs sont requis" });
+        if (!email || !lastname || !firstname || !password || !confirmPassword || !role) {
+            return res.status(400).json({ message: "Toute les donnée non pas été envoyé" });
         }
 
         if (password !== confirmPassword) {
@@ -61,11 +69,19 @@ exports.register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        console.log("avant création")
+
         const newUser = await User.create({
+            lastname,
+            firstname, 
             email,
-            pseudo,
-            password: hashedPassword,
+            password : hashedPassword, 
+            role,
+            agencyId
         })
+
+        console.log("apré création")
+
 
         res.status(201).json({ 
             message: "Utilisateur créé avec succès !",

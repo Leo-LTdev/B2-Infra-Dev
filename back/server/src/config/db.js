@@ -10,7 +10,8 @@ const sequelize = new Sequelize(
         dialect: 'mysql',
         logging: false,
         define: {
-            timestamps: false // Désactive la gestion de createdAt et updatedAt
+            timestamps: false, // Désactive la gestion de createdAt et updatedAt
+            underscored: true, // fait la traduction camelcase <--> snakecase
         } 
     }
 );

@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/db');
+const { authRoutes } = require('./routes')
+
 
 
 const app = express();
@@ -16,11 +18,7 @@ sequelize.authenticate()
     .catch(err => console.error('Erreur BDD :', err));
 
 // Routes
-app.use('/auth', authRoutes);
-
-app.use('/project', projectRoutes);
-app.use('/task', taskRoutes);
-app.use('/user', userRoutes);
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.NODE_LOCAL_PORT;
 app.listen(PORT, () => {

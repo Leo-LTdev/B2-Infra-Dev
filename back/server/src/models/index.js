@@ -1,29 +1,31 @@
 const sequelize = require('../config/db');
-const User = require('./User');
-const Property = require('./Property');
-const Agency = require('./Agency');
-const Sale = require('./Sale');
 
+const Agency = require('./Agency')(sequelize);
+const User = require('./User')(sequelize);
+const Property = require('./Property')(sequelize);
+const Sale = require('./Sale')(sequelize);
 
-// ============================================================================
-// 3. CONFIGURATION DES RELATIONS (Reflet exact de tes contraintes SQL)
-// ============================================================================
+// =============================
+//  CONFIGURATION DES RELATIONS 
+// =============================
 
-Agency.hasMany(User, { foreignKey: 'agency_id', onDelete: 'SET NULL' });
-User.belongsTo(Agency, { foreignKey: 'agency_id' });
+// Relation Agence <-> Utilisateurs
+Agency.hasMany(User, { foreignKey: 'agencyId', onDelete: 'SET NULL' });
+User.belongsTo(Agency, { foreignKey: 'agencyId' });
 
+// Relation Agence <-> Biens Immobiliers
+Agency.hasMany(Property, { foreignKey: 'agencyId', onDelete: 'RESTRICT' });
+Property.belongsTo(Agency, { foreignKey: 'agencyId' });
 
-Agency.hasMany(Property, { foreignKey: 'agency_id', onDelete: 'RESTRICT' });
-Property.belongsTo(Agency, { foreignKey: 'agency_id' });
+// Relation Biens Immobiliers <-> Ventes (1-to-1)
+Property.hasOne(Sale, { foreignKey: 'propertyId', onDelete: 'RESTRICT' });
+Sale.belongsTo(Property, { foreignKey: 'propertyId' });
 
+// Relation Commercial (User) <-> Ventes
+User.hasMany(Sale, { foreignKey: 'agentId', onDelete: 'RESTRICT' });
+Sale.belongsTo(User, { foreignKey: 'agentId' });
 
-Property.hasOne(Sale, { foreignKey: 'property_id', onDelete: 'RESTRICT' });
-Sale.belongsTo(Property, { foreignKey: 'property_id' });
-
-
-User.hasMany(Sale, { foreignKey: 'agent_id', onDelete: 'RESTRICT' });
-Sale.belongsTo(User, { foreignKey: 'agent_id' });
-
+// 4. On exporte TOUT d'un coup : la connexion ET les modèles configurés
 module.exports = {
   sequelize,
   Agency,

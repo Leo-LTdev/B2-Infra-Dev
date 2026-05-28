@@ -33,7 +33,6 @@ module.exports = (sequelize) => {
     },
     agency_id: {
       type: DataTypes.INTEGER,
-      allowNull: true
     },
     createdAt: {
         type: DataTypes.DATE,
@@ -42,6 +41,7 @@ module.exports = (sequelize) => {
     }
   }, {
     tableName: 'users',
+    underscored: true,
   });
 
   return User;
