@@ -14,8 +14,5 @@ RUN npm install
 # Code source
 COPY . .
 
-# Port
-EXPOSE 5000
-
 # Cmd de démarrage
 CMD ["npm", "run", "dev"]

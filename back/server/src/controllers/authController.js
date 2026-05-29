@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
         const user = await User.findOne({ where: { email } });
 
         if (!user) {
-            return res.status(404).json({ message: "Utilisateur non trouvé" });
+            return res.status(404).json({ "message: utilisateur non trouvé" });
         }
 
         const passwordValid = await bcrypt.compare(password, user.password);
@@ -69,8 +69,6 @@ exports.register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        console.log("avant création")
-
         const newUser = await User.create({
             lastname,
             firstname, 
@@ -78,10 +76,7 @@ exports.register = async (req, res) => {
             password : hashedPassword, 
             role,
             agencyId
-        })
-
-        console.log("apré création")
-
+        });
 
         res.status(201).json({ 
             message: "Utilisateur créé avec succès !",
