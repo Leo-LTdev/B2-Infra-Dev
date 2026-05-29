@@ -25,7 +25,9 @@ const handleLogin = async () => {
     });
 
     
-    console.log('Connecté ! Voici les données :', response?.data)
+    router.push('/home');
+
+
   } catch (error: any) {
     errorMessage.value = error?.response?.data?.message || 'Une erreur est survenue lors de la connexion.'
     console.error('Erreur lors de la connexion', error?.response?.data?.message)
@@ -56,4 +58,94 @@ const handleLogin = async () => {
 </template>
 
 <style scoped>
+  /* --- Container Principal --- */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-container);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    padding: 20px;
+  }
+
+  /* --- Carte de Connexion --- */
+  .login-card {
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .login-card h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    color: var(--text-main);
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* --- Formulaire --- */
+  .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    margin-bottom: 6px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .form-group input {
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 15px;
+    color: var(--text-main);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  /* --- Message d'erreur --- */
+  .error-text {
+    color: var(--error-color);
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    font-weight: 500;
+  }
+
+  /* --- Bouton --- */
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+  }
+
+  button:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+  }
+
+  /* Style quand le bouton est désactivé (isLoading) */
+  button:disabled {
+    background-color: var(--border-color);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
 </style>
