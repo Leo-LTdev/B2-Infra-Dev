@@ -50,6 +50,14 @@ exports.updateUser = async (req, res) => {
             return res.status(400).json({ message: "Toute les donnée non pas été envoyé" });
         }
 
+        if(user.email != email){
+            const isAlreadyExist = await User.findOne({ where: { email } });
+            
+            if (isAlreadyExist) {
+                return res.status(400).json({ message: "Email déjà utilisé" });
+            }
+        }
+
         if (password != confirmPassword) {
             return res.status(400).json({ message: "Les mots de passe ne correspondent pas" });
         }
