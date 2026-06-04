@@ -2,7 +2,7 @@ const sequelize = require('../config/db');
 
 const Agency = require('./Agency')(sequelize);
 const User = require('./User')(sequelize);
-const Property = require('./Property')(sequelize);
+const Bien = require('./Bien')(sequelize);
 const Sale = require('./Sale')(sequelize);
 
 // =============================
@@ -14,12 +14,12 @@ Agency.hasMany(User, { foreignKey: 'agencyId', onDelete: 'SET NULL' });
 User.belongsTo(Agency, { foreignKey: 'agencyId' });
 
 // Relation Agence <-> Biens Immobiliers
-Agency.hasMany(Property, { foreignKey: 'agencyId', onDelete: 'RESTRICT' });
-Property.belongsTo(Agency, { foreignKey: 'agencyId' });
+Agency.hasMany(Bien, { foreignKey: 'agencyId', onDelete: 'RESTRICT' });
+Bien.belongsTo(Agency, { foreignKey: 'agencyId' });
 
 // Relation Biens Immobiliers <-> Ventes (1-to-1)
-Property.hasOne(Sale, { foreignKey: 'propertyId', onDelete: 'RESTRICT' });
-Sale.belongsTo(Property, { foreignKey: 'propertyId' });
+Bien.hasOne(Sale, { foreignKey: 'propertyId', onDelete: 'RESTRICT' });
+Sale.belongsTo(Bien, { foreignKey: 'propertyId' });
 
 // Relation Commercial (User) <-> Ventes
 User.hasMany(Sale, { foreignKey: 'agentId', onDelete: 'RESTRICT' });
@@ -30,6 +30,6 @@ module.exports = {
   sequelize,
   Agency,
   User,
-  Property,
+  Bien,
   Sale
 };

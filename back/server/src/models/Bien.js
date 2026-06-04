@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const Property = sequelize.define('Property', {
+  const Bien = sequelize.define('Bien', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -57,8 +57,8 @@ module.exports = (sequelize) => {
         defaultValue: DataTypes.NOW
     }
   }, {
-    tableName: 'properties',
+    tableName: 'biens',
   });
 
-  return Property;
+  return Bien;
 };
