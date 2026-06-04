@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
       allowNull: true
     },
     type: {
-      type: DataTypes.ENUM('Résidentiel', 'Professionnel'),
+      type: DataTypes.ENUM('Residentiel', 'Professionnel'),
       allowNull: false
     },
     category: {

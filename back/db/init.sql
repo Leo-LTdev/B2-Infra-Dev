@@ -27,7 +27,7 @@ CREATE TABLE biens (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(150) NOT NULL,
     description TEXT,
-    type ENUM('Résidentiel', 'Professionnel') NOT NULL,
+    type ENUM('Residentiel', 'Professionnel') NOT NULL,
     category ENUM('Maison', 'Appartement', 'Bureau', 'Local commercial') NOT NULL,
     price DECIMAL(12, 2) NOT NULL, 
     surface_sqm INT NOT NULL,
@@ -67,8 +67,8 @@ INSERT INTO agencies (name, city, address, is_headquarter) VALUES
 
 -- Insertion de Biens Immobiliers
 INSERT INTO biens (title, description, type, category, price, surface_sqm, rooms, city, postal_code, status, agency_id) VALUES
-('Bel Appartement T3 Lumineux', 'Superbe appartement proche commerces', 'Résidentiel', 'Appartement', 245000.00, 68, 3, 'Paris', '75011', 'Vendu', 2),
-('Maison Contemporaine avec Piscine', 'Grande maison familiale hors lotissement', 'Résidentiel', 'Maison', 520000.00, 140, 5, 'Lyon', '69006', 'Disponible', 3),
+('Bel Appartement T3 Lumineux', 'Superbe appartement proche commerces', 'Residentiel', 'Appartement', 245000.00, 68, 3, 'Paris', '75011', 'Vendu', 2),
+('Maison Contemporaine avec Piscine', 'Grande maison familiale hors lotissement', 'Residentiel', 'Maison', 520000.00, 140, 5, 'Lyon', '69006', 'Disponible', 3),
 ('Bureaux d''entreprise modernes', 'Plateau de bureaux aménagés en plein centre', 'Professionnel', 'Bureau', 890000.00, 210, 8, 'Aix-en-Provence', '13100', 'Disponible', 1),
 ('Local Commercial Plein Centre', 'Fonds de commerce idéalement situé', 'Professionnel', 'Local commercial', 135000.00, 45, 2, 'Marseille', '13001', 'Vendu', 4);
 
