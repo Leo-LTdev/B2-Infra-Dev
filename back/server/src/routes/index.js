@@ -1,6 +1,6 @@
 const authRoutes = require('./authRoutes');
 const userRoutes = require('./userRoutes');
-const bienRoutes = require('./bien');
+const bienRoutes = require('./bienRoutes');
 
 module.exports = {
     authRoutes,

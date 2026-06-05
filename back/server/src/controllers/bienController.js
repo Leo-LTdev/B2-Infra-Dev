@@ -51,3 +51,18 @@ exports.createBien = async (req, res) => {
     }
 
 }
+
+exports.getAllBiens = async (req,res) => {
+    try {
+        const allBien = await Bien.findAll();
+
+        console.log("voici les bien", allBien)
+
+        res.status(200).json({
+            message : "Les bien ou tous été trouvé",
+            allBien : allBien
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
