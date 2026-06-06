@@ -1,5 +1,5 @@
+const { Op } = require ('sequelize');
 const { Bien } = require('../models');
-
 
 exports.createBien = async (req, res) => {
     try {
@@ -54,15 +54,40 @@ exports.createBien = async (req, res) => {
 
 exports.getAllBiens = async (req,res) => {
     try {
-        const allBien = await Bien.findAll();
+    const { prixMin, prixMax, surfaceMin, surfaceMax, lieu, type, order } = req.query;
+    const conditions = {};
 
-        console.log("voici les bien", allBien)
-
-        res.status(200).json({
-            message : "Les bien ou tous été trouvé",
-            allBien : allBien
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (type && type !== 'tous') conditions.type = type;
+    
+    if (lieu) {
+      conditions.city = { [Op.like]: `%${lieu}%` }; 
     }
+
+    if (prixMin || prixMax) {
+      conditions.price = {};
+      if (prixMin) conditions.price[Op.gte] = Number(prixMin);
+      if (prixMax) conditions.price[Op.lte] = Number(prixMax);
+    }
+
+    if (surfaceMin || surfaceMax) {
+      conditions.surface_sqm = {};
+      if (surfaceMin) conditions.surface_sqm[Op.gte] = Number(surfaceMin);
+      if (surfaceMax) conditions.surface_sqm[Op.lte] = Number(surfaceMax);
+    }
+
+    console.log("test conditions", conditions)
+
+    const orderValue = order === 'true' ? [['price', 'DESC']] : [['price', 'ASC']];
+
+    const allBien = await Bien.findAll({
+      where: conditions,
+      order: orderValue
+    });
+
+    res.json({ allBien });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 }

@@ -13,8 +13,8 @@ import { watchEffect } from 'vue';
 <template>
     <section class="bien-card">
         <img src="" alt="image de maison" class="bien-card_img">
-        <h3 class="bien-card_price">{{ bien.price }}</h3>
-        <p class="bien-card_p" >{{bien.surface_sqm}}</p>
+        <h3 class="bien-card_price">{{ bien.price }} €</h3>
+        <p class="bien-card_p" >{{bien.surface_sqm}} m²</p>
         <p class="bien-card_p" >{{bien.city}}</p>
     </section>
 </template>
