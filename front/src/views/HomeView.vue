@@ -31,7 +31,6 @@
       
       allBien.value = response.data.allBien
       
-      console.log('Mes données reçues :', allBien.value)
     } catch (error) {
       console.error('Erreur lors de la récupération des biens :', error)
     }
