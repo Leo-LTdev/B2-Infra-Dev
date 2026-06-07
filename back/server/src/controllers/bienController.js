@@ -66,9 +66,6 @@ exports.createBien = async (req, res) => {
             data: createdBien
         });
 
-        console.log("--- OÙ MULTER A ENREGISTRÉ L'IMAGE ---");
-        console.log("Chemin absolu d'écriture :", req.file.path);
-        console.log("--------------------------------------");
     } catch (error) {
         console.error("Erreur lors de la création du bien :", error);
         res.status(500).json({ message: "Erreur lors de la création du bien" });
