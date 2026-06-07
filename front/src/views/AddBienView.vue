@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue'
+import { useRouter } from 'vue-router'
 import type { AxiosInstance } from 'axios'
 
 const api = inject<AxiosInstance>('api')
+
+const router = useRouter()
 
 const title = ref<string>('');
 const description = ref<string>('');
@@ -47,6 +50,8 @@ const ajouterAnnonce = async () => {
         'Content-Type': 'multipart/form-data' 
       }
     })
+
+    router.push('/home')
   } catch (error) {
     console.error(error.message)
   }

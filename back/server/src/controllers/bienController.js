@@ -5,7 +5,7 @@ const path = require('path');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'src/uploads/'); 
+    cb(null, path.join(__dirname, '..', 'uploads'));
   },
   filename: (req, file, cb) => {
     
@@ -65,7 +65,10 @@ exports.createBien = async (req, res) => {
             message: "Bien créé avec succès !",
             data: createdBien
         });
-        console.log("avant création du bien ")
+
+        console.log("--- OÙ MULTER A ENREGISTRÉ L'IMAGE ---");
+        console.log("Chemin absolu d'écriture :", req.file.path);
+        console.log("--------------------------------------");
     } catch (error) {
         console.error("Erreur lors de la création du bien :", error);
         res.status(500).json({ message: "Erreur lors de la création du bien" });

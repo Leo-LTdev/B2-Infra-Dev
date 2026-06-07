@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/db');
 const { authRoutes, userRoutes, bienRoutes } = require('./routes')
+const path = require('path');
 
 
 
@@ -11,6 +12,13 @@ const app = express();
 // Middlewares globaux
 app.use(cors());
 app.use(express.json());
+
+console.log("--- VÉRIFICATION DES CHEMINS STATIQUES ---");
+console.log("Le dossier du script server.js (__dirname) est :", __dirname);
+console.log("Express cherche le dossier uploads ici :", path.join(__dirname, 'uploads'));
+console.log("------------------------------------------");
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connexion BDD
 sequelize.authenticate()

@@ -12,7 +12,10 @@ import { watchEffect } from 'vue';
 
 <template>
     <section class="bien-card">
-        <img src="" alt="image de maison" class="bien-card_img">
+        <img 
+            :src="`http://localhost:5000${bien.image_url}`" 
+            alt="image de maison" 
+            class="bien-card_img">
         <h3 class="bien-card_price">{{ bien.price }} €</h3>
         <p class="bien-card_p" >{{bien.surface_sqm}} m²</p>
         <p class="bien-card_p" >{{bien.city}}</p>
@@ -30,5 +33,12 @@ import { watchEffect } from 'vue';
 
         padding: 10px;
         max-width: 300px;
+    }
+
+    .bien-card_img{
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
     }
 </style>
