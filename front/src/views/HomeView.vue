@@ -1,7 +1,10 @@
 <script setup lang="ts">
   import BienCard from '@/components/BienCard.vue'
+  import { useRouter } from 'vue-router'
   import { inject, ref, onMounted, watch } from 'vue'
   import type { AxiosInstance } from 'axios'
+
+  const router = useRouter()
 
   const filterType = ref<string>('tous')
   const filterOrder = ref<boolean>(false)
@@ -36,6 +39,10 @@
     }
   }
 
+  function handleNewBien() {
+    router.push('/addBien')
+  }
+
   watch([prixMin, prixMax, surfaceMin, surfaceMax, ville, filterType, filterOrder], () => {
     getAllBien()
   })
@@ -48,8 +55,9 @@
 
 <template>
   <div class="page-container">
-    <header>
-      <h1>🏠 Trouver un bien immobilier</h1>
+    <header class="page-header">
+      <h1>Ymmo</h1>
+      <button class="header_btn" @click="handleNewBien">Ajouter une offre</Button>
     </header>
 
     <section class="filters-bar">
@@ -136,6 +144,20 @@
 
 
 <style scoped>
+  .page-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .header_btn {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+  }
+
   .page-container {
     max-width: 1200px;
     margin: 0 auto;
