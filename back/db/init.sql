@@ -34,8 +34,9 @@ CREATE TABLE biens (
     rooms INT NOT NULL,
     city VARCHAR(100) NOT NULL,
     postal_code VARCHAR(10) NOT NULL,
-    status ENUM('Disponible', 'Vendu', 'Réservé') DEFAULT 'Disponible',
+    status ENUM('Disponible', 'Vendu', 'Reserver') DEFAULT 'Disponible',
     agency_id INT NOT NULL,
+    image_url varchar(255) not null DEFAULT "./uploads/default.jpg",
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (agency_id) REFERENCES agencies(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
