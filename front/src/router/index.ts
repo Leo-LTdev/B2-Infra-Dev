@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import HomeView from '@/views/HomeView.vue'
+import AssignAgency from '@/components/Agencies/AssignAgency.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -14,9 +15,9 @@ const routes: Array<RouteRecordRaw> = [
     component: LoginView
   },
   {
-    path: '/home',
-    name: 'home',
-    component : HomeView
+    path: '/agency',
+    name: 'Agency',
+    component : AssignAgency
   }
 ]
 
