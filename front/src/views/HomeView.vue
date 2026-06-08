@@ -54,6 +54,10 @@
 </script>
 
 <template>
+  <div>
+    <AssignAgency />
+  </div>
+
   <div class="page-container">
     <header class="page-header">
       <h1>Ymmo</h1>

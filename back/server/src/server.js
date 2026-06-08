@@ -2,8 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/db');
-const { authRoutes, userRoutes, bienRoutes } = require('./routes')
+const { authRoutes, userRoutes, bienRoutes,agencyRoutes } = require('./routes')
 const path = require('path');
+
 
 
 
@@ -26,6 +27,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 
 app.use('/api/bien', bienRoutes);
+
+app.use('/api/agencies', agencyRoutes);
 
 const PORT = process.env.NODE_LOCAL_PORT;
 app.listen(PORT, () => {

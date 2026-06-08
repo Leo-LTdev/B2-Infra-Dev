@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import AssignAgency from '@/components/Agencies/AssignAgency.vue';
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,6 +12,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/login',
     name: 'login',
     component : () => import('@/views/LoginView.vue')
+  },
+  {
+    path: '/agency',
+    name: 'Agency',
+    component : AssignAgency
   },
   {
     path: '/home',
