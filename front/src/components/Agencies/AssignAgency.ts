@@ -8,6 +8,13 @@ export interface Agency {
   isHeadquarter: boolean;
 }
 
+export interface User {
+  id: number;
+  lastname: string;
+  firstname: string;
+  role: string;
+}
+
 export interface ApiResponse {
   message?: string;
   error?: string;
@@ -17,7 +24,8 @@ export function useAssignAgency() {
   const API_URL = 'http://localhost:5000/api';
 
   const agencies = ref<Agency[]>([]);
-  const agentId = ref<number>(1);
+  const users = ref<User[]>([]);
+  const agentId = ref<number | ''>('');
   const selectedAgencyId = ref<number | ''>('');
   const message = ref<string>('');
   const messageType = ref<'success' | 'error' | ''>('');
@@ -35,11 +43,24 @@ export function useAssignAgency() {
     try {
       const response = await fetch(`${API_URL}/agencies`);
       if (!response.ok) throw new Error('Erreur réseau');
-      
+
       agencies.value = await response.json() as Agency[];
     } catch (error) {
       console.error("erreur de chargement:", error);
       showMessage("Impossible de charger les agences", "error");
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(`${API_URL}/user`);
+      if (!response.ok) throw new Error('Erreur réseau');
+
+      const data = await response.json();
+      users.value = data.users;
+    } catch (error) {
+      console.error("erreur de chargement:", error);
+      showMessage("Impossible de charger les utilisateurs", "error");
     }
   };
 
@@ -71,10 +92,12 @@ export function useAssignAgency() {
 
   onMounted(() => {
     fetchAgencies();
+    fetchUsers();
   });
 
   return {
     agencies,
+    users,
     agentId,
     selectedAgencyId,
     message,
