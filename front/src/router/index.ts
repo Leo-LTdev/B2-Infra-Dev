@@ -27,6 +27,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/addBien',
     name: 'addBien',
     component : () => import('@/views/AddBienView.vue')
+  },
+  {
+    path: '/detail/:id',
+    name: 'detail',
+    component : () => import('@/views/DetailView.vue')
   }
 ]
 

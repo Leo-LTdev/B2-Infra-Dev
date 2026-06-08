@@ -1,7 +1,5 @@
 <script setup lang="ts">
 
-import { watchEffect } from 'vue';
-
     defineProps ({
         bien : {
             type :Object,

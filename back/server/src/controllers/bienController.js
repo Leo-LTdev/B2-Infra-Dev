@@ -97,8 +97,6 @@ exports.getAllBiens = async (req,res) => {
       if (surfaceMax) conditions.surface_sqm[Op.lte] = Number(surfaceMax);
     }
 
-    console.log("test conditions", conditions)
-
     const orderValue = order === 'true' ? [['price', 'DESC']] : [['price', 'ASC']];
 
     const allBien = await Bien.findAll({
@@ -112,4 +110,10 @@ exports.getAllBiens = async (req,res) => {
     console.error(error);
     res.status(500).json({ message: "Erreur serveur" });
   }
+}
+
+exports.getBienById = async (req, res) => {
+  const bienId = req.params.id
+
+  console.log(bienId);
 }

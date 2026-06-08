@@ -49,6 +49,9 @@
 
   onMounted(() => { getAllBien() })
   
+  const goToDetails = (id: number) => {
+    router.push({ name: 'detail', params: { id: id } });
+  };
 
 
 </script>
@@ -133,7 +136,8 @@
       
       <div class="grid-biens">
         <BienCard 
-          v-for="bien in allBien" 
+          v-for="bien in allBien"
+          @click="goToDetails(bien.id)"
           :key="bien.id" 
           :bien="bien" 
         />
