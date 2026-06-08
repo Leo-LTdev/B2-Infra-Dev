@@ -6,6 +6,7 @@ GET http://localhost:5000/api/agencies
 ### 2. Rattacher un agent existant à une agence (PUT - CAS IDÉAL)
 PUT http://localhost:5000/api/agencies/users/1/agency
 Content-Type: application/json
+Authorization: Bearer <votre_token_d_authentification>
 
 {
     "agencyId": 2
@@ -14,7 +15,7 @@ Content-Type: application/json
 ### 3. Erreur : Tenter de rattacher un agent qui n'existe pas (PUT)
 PUT http://localhost:5000/api/agencies/users/9999/agency
 Content-Type: application/json
-
+Authorization: Bearer <votre_token_d_authentification>
 {
     "agencyId": 2
 }
@@ -22,7 +23,7 @@ Content-Type: application/json
 ### 4. Erreur : Oublier d'envoyer l'ID de l'agence (PUT)
 PUT http://localhost:5000/api/agencies/users/1/agency
 Content-Type: application/json
-
+Authorization: Bearer <votre_token_d_authentification>
 {
 
 }
@@ -30,7 +31,7 @@ Content-Type: application/json
 ### 5. Créer une nouvelle agence (POST)
 POST http://localhost:5000/api/agencies
 Content-Type: application/json
-
+Authorization: Bearer <votre_token_d_authentification>
 {
     "name": "Ymmo Agence Bordeaux",
     "city": "Bordeaux",
