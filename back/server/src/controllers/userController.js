@@ -4,11 +4,13 @@ const bcrypt = require('bcrypt');
 
 exports.getAllUser = async (req, res) => {
     try {
-        const userId = req.auth.userId;
-        const allUser = await User.findAll({ where: { id: {[Op.ne]: userId}}})
+        const userId = req.auth ? req.auth.userId : null; 
+        
+        const condition = userId ? { id: {[Op.ne]: userId}} : {};
+        const allUser = await User.findAll({ where: condition });
 
         res.status(200).json({ 
-            message: "Tous les utilisateur on été trouver",
+            message: "Tous les utilisateurs ont été trouvés",
             users: allUser
         });
     } catch (error) {
