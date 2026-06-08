@@ -51,7 +51,7 @@ exports.register = async (req, res) => {
             agencyId
          } = req.body;
 
-        if (!email || !lastname || !firstname || !password || !confirmPassword || !role) {
+        if (!email || !lastname || !firstname || !password || !confirmPassword) {
             return res.status(400).json({ message: "Toute les donnée non pas été envoyé" });
         }
 

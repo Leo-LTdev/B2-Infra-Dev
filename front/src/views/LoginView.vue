@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router'
 import { ref, inject } from 'vue'
 import type { AxiosInstance } from 'axios'
+import { error } from 'console'
 
 const router = useRouter()
 
@@ -24,6 +25,11 @@ const handleLogin = async () => {
       password: password.value
     });
 
+    const token = response.data.token;
+    if (!token) { console.log("le token n'a pas été trouver"); return }
+    
+    localStorage.setItem('userToken', token);
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     
     router.push('/home');
 
@@ -32,6 +38,10 @@ const handleLogin = async () => {
     errorMessage.value = error?.response?.data?.message || 'Une erreur est survenue lors de la connexion.'
     console.error('Erreur lors de la connexion', error?.response?.data?.message)
   }
+}
+
+function goToRegister(){
+  router.push('/register')
 }
 </script>
 
@@ -49,6 +59,7 @@ const handleLogin = async () => {
           <input v-model="password" type="password" id="password" required placeholder="••••••••" />
         </div>
         <p v-if="errorMessage" class="error-text">{{ errorMessage }}</p>
+        <span @click="goToRegister()" class="login-card_link">pas de compte ?</span>
         <button type="submit" :disabled="isLoading">
           {{ isLoading ? 'Connexion en cours...' : 'Se connecter' }}
         </button>
@@ -78,6 +89,15 @@ const handleLogin = async () => {
     width: 100%;
     max-width: 400px;
   }
+
+  .login-card_link{
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+
+
 
   .login-card h2 {
     margin-top: 0;

@@ -72,15 +72,15 @@ const ajouterAnnonce = async () => {
 }
 
 const fetchAgencies = async () => {
-      try {
-        const response = await fetch(`${API_URL}/agencies`);
-        if (!response.ok) throw new Error('Erreur réseau');
-        
-        agencies.value = await response.json() as Agency[];
-      } catch (error) {
-        console.error("erreur de chargement:", error);
-      }
-    };
+  try {
+    const response = await api.get('/agencies'); 
+    
+    agencies.value = response.data as Agency[];
+
+  } catch (error) {
+    console.error("Erreur de chargement :", error);
+  }
+};
 
   onMounted(() => {
       fetchAgencies();

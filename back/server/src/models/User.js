@@ -29,7 +29,6 @@ module.exports = (sequelize) => {
     },
     role: {
       type: DataTypes.ENUM('Direction', 'Commercial', 'Communication & Marketing', 'Administratif - RH - Juridique', 'IT et Support', 'user'),
-      allowNull: false
     },
     agency_id: {
       type: DataTypes.INTEGER,

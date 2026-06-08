@@ -1,4 +1,5 @@
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, inject } from 'vue';
+import type { AxiosInstance } from 'axios'
 
 export interface Agency {
   id: number;
@@ -23,6 +24,8 @@ export interface ApiResponse {
 export function useAssignAgency() {
   const API_URL = 'http://localhost:5000/api';
 
+  const api = inject<AxiosInstance>('api')
+
   const agencies = ref<Agency[]>([]);
   const users = ref<User[]>([]);
   const agentId = ref<number | ''>('');
@@ -41,23 +44,20 @@ export function useAssignAgency() {
 
   const fetchAgencies = async () => {
     try {
-      const response = await fetch(`${API_URL}/agencies`);
-      if (!response.ok) throw new Error('Erreur réseau');
+      const response = await api.get('/agencies'); 
+      
+      agencies.value = response.data as Agency[];
 
-      agencies.value = await response.json() as Agency[];
     } catch (error) {
-      console.error("erreur de chargement:", error);
-      showMessage("Impossible de charger les agences", "error");
+      console.error("Erreur de chargement :", error);
     }
   };
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(`${API_URL}/user`);
-      if (!response.ok) throw new Error('Erreur réseau');
+      const response = await api.get('/user');
 
-      const data = await response.json();
-      users.value = data.users;
+      users.value = response.data.users
     } catch (error) {
       console.error("erreur de chargement:", error);
       showMessage("Impossible de charger les utilisateurs", "error");
@@ -69,19 +69,15 @@ export function useAssignAgency() {
     message.value = '';
 
     try {
-      const response = await fetch(`${API_URL}/agencies/users/${agentId.value}/agency`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ agencyId: Number(selectedAgencyId.value) })
+      if (!api) throw new Error("L'instance API n'est pas disponible.");
+
+      const response = await api.put(`/agencies/users/${agentId.value}/agency`, {
+        agencyId: Number(selectedAgencyId.value)
       });
 
-      const data = await response.json() as ApiResponse;
+      const data = response.data as ApiResponse;
 
-      if (response.ok) {
-        showMessage(`Succès : ${data.message}`, "success");
-      } else {
-        showMessage(`Erreur : ${data.error || data.message || 'Une erreur est survenue'}`, "error");
-      }
+      showMessage(`Succès : ${data.message}`, "success");
     } catch (error) {
       console.error("erreur d'assignation:", error);
       showMessage("Erreur de connexion au serveur", "error");
