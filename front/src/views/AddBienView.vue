@@ -1,11 +1,25 @@
 <script setup lang="ts">
-import { ref, inject } from 'vue'
+import { ref, inject, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import type { AxiosInstance } from 'axios'
+
+
+export interface Agency {
+  id: number;
+  name: string;
+  city: string;
+  address: string;
+  isHeadquarter: boolean;
+}
+
+const API_URL = 'http://localhost:5000/api';
 
 const api = inject<AxiosInstance>('api')
 
 const router = useRouter()
+  
+const agencies = ref<Agency[]>([]);
+
 
 const title = ref<string>('');
 const description = ref<string>('');
@@ -53,9 +67,25 @@ const ajouterAnnonce = async () => {
 
     router.push('/home')
   } catch (error) {
-    console.error(error.message)
+    console.error(error)
   }
 }
+
+const fetchAgencies = async () => {
+      try {
+        const response = await fetch(`${API_URL}/agencies`);
+        if (!response.ok) throw new Error('Erreur réseau');
+        
+        agencies.value = await response.json() as Agency[];
+      } catch (error) {
+        console.error("erreur de chargement:", error);
+      }
+    };
+
+  onMounted(() => {
+      fetchAgencies();
+    });
+
 </script>
 
 <template>
@@ -76,8 +106,10 @@ const ajouterAnnonce = async () => {
     <input class="form-control" v-model.number="surface" type="number" placeholder="Surface" required />
     <input class="form-control" v-model.number="rooms" type="number" placeholder="Nombre de pièces" required />
     <input class="form-control" v-model="city" type="text" placeholder="Ville" required />
-    <input class="form-control" v-model="postalCode" type="text" placeholder="Code postal" required />
-    <input class="form-control" v-model.number="agentId" type="number" placeholder="ID de l'agent" required />  faire requete api pour tous les numéro d'agence
+    <input class="form-control" v-model="postalCode" type="text" placeholder="Code postal" required maxlength="5" pattern="[0-9]{5}" />
+    <select class="form-control" v-model.number="agentId" type="number" placeholder="ID de l'agent" required>
+      <option v-for="agencie in agencies" :key="agencie.id" :value="agencie.id">{{ agencie.name }}</option>
+    </select>
     <input class="form-control" type="file" @change="surChangementImage" accept="image/*" required />
     
     <button class="form-btn" type="submit">Créer l'annonce</button>
