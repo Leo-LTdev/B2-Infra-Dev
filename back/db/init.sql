@@ -16,7 +16,7 @@ CREATE TABLE users (
     firstname VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL, -- Destiné à accueillir un mot de passe hashé
-    role ENUM('Direction', 'Commercial', 'Communication & Marketing', 'Administratif - RH - Juridique', 'IT et Support') NOT NULL,
+    role ENUM('Direction', 'Commercial', 'Communication & Marketing', 'Administratif - RH - Juridique', 'IT et Support', 'user') NOT NULL DEFAULT 'user',
     agency_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (agency_id) REFERENCES agencies(id) ON DELETE SET NULL
@@ -28,7 +28,7 @@ CREATE TABLE biens (
     title VARCHAR(150) NOT NULL,
     description TEXT,
     type ENUM('Residentiel', 'Professionnel') NOT NULL,
-    category ENUM('Maison', 'Appartement', 'Bureau', 'Local commercial') NOT NULL,
+    category ENUM('Maison', 'Appartement', 'Bureau', 'Local commercial') NOT NULL ,
     price DECIMAL(12, 2) NOT NULL, 
     surface_sqm INT NOT NULL,
     rooms INT NOT NULL,

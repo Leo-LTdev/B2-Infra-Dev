@@ -4,8 +4,7 @@ const cors = require('cors');
 const sequelize = require('./config/db');
 const { authRoutes, userRoutes, bienRoutes,agencyRoutes } = require('./routes')
 const path = require('path');
-
-
+const authMiddleware = require ('./middlewares/authMiddleware')
 
 
 const app = express();
@@ -23,6 +22,8 @@ sequelize.authenticate()
 
 // Routes
 app.use('/api/auth', authRoutes);
+
+app.use(authMiddleware);
 
 app.use('/api/user', userRoutes);
 
