@@ -4,10 +4,15 @@
     <p>Affectez un agent immobilier à sa nouvelle agence de rattachement.</p>
 
     <form @submit.prevent="assignAgency">
-      
+
       <div class="form-group">
-        <label for="agentId">ID de l'Agent :</label>
-        <input type="number" id="agentId" v-model="agentId" min="1" required />
+        <label for="agentSelect">Agent immobilier :</label>
+        <select id="agentSelect" v-model="agentId" required>
+          <option value="" disabled>Sélectionnez un agent</option>
+          <option v-for="user in users" :key="user.id" :value="user.id">
+            {{ user.firstname }} {{ user.lastname }} ({{ user.role }})
+          </option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -33,71 +38,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, inject } from 'vue'
-import type { AxiosInstance } from 'axios'
+import { useAssignAgency } from './AssignAgency';
 
-export interface Agency {
-  id: number;
-  name: string;
-  city: string;
-  address: string;
-  isHeadquarter: boolean;
-}
-
-const api = inject<AxiosInstance>('api')
-
-const agencies = ref<Agency[]>([])
-const agentId = ref<number>(1)
-const selectedAgencyId = ref<number | ''>('')
-const message = ref<string>('')
-const messageType = ref<'success' | 'error' | ''>('')
-const isLoading = ref<boolean>(false)
-
-const showMessage = (msg: string, type: 'success' | 'error') => {
-  message.value = msg
-  messageType.value = type
-  setTimeout(() => {
-    message.value = ''
-  }, 5000)
-}
-
-const fetchAgencies = async () => {
-  try {
-    if (!api) throw new Error("L'instance API n'est pas disponible.")
-    
-    const response = await api.get('/agencies') 
-    agencies.value = response.data
-  } catch (error: any) {
-    console.error("Erreur de chargement:", error)
-    showMessage("Impossible de charger les agences", "error")
-  }
-}
-
-const assignAgency = async () => {
-  isLoading.value = true
-  message.value = ''
-
-  try {
-    if (!api) throw new Error("L'instance API n'est pas disponible.")
-
-    const response = await api.put(`/agencies/users/${agentId.value}/agency`, {
-      agencyId: Number(selectedAgencyId.value)
-    })
-
-    showMessage(`Succès : ${response.data.message}`, "success")
-    
-  } catch (error: any) {
-    console.error("Erreur d'assignation:", error)
-    const errorMsg = error?.response?.data?.message || error?.response?.data?.error || "Erreur de connexion au serveur"
-    showMessage(`Erreur : ${errorMsg}`, "error")
-  } finally {
-    isLoading.value = false
-  }
-}
-
-onMounted(() => {
-  fetchAgencies()
-})
+const {
+  agencies,
+  users,
+  agentId,
+  selectedAgencyId,
+  message,
+  messageType,
+  isLoading,
+  assignAgency
+} = useAssignAgency();
 </script>
 
 <style scoped>
