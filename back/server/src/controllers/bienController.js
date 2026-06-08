@@ -107,13 +107,19 @@ exports.getAllBiens = async (req,res) => {
     res.json({ allBien });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(500).json({ message: "Erreur serveur", error });
   }
 }
 
 exports.getBienById = async (req, res) => {
-  const bienId = req.params.id
 
-  console.log(bienId);
+  try {
+    const bienId = req.params.id
+  
+    const bien = await Bien.findOne({where: { id: bienId }})
+
+    res.json({ bien });
+  } catch {
+    res.status(500).json({ message: "Erreur serveur", error });
+  }
 }
