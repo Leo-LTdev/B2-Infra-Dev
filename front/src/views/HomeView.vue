@@ -16,6 +16,7 @@
   
   const api = inject<AxiosInstance>('api')
   const allBien = ref<any[]>([])
+  const isAgent = ref<boolean>(false)
 
   const getAllBien = async () => {
     if (!api) {throw new Error('API instance not provided via injection')}
@@ -33,9 +34,10 @@
       })
       
       allBien.value = response.data.allBien
+      isAgent.value = response.data.isAgent
       
     } catch (error) {
-      console.error('Erreur lors de la récupération des biens :', error)
+      console.error('Erreur lors de la récupération des biens :', error.response?.data?.message)
     }
   }
 
@@ -64,7 +66,7 @@
   <div class="page-container">
     <header class="page-header">
       <h1>Ymmo</h1>
-      <button class="header_btn" @click="handleNewBien">Ajouter une offre</Button>
+      <button v-if="isAgent" class="header_btn" @click="handleNewBien">Ajouter une offre</Button>
     </header>
 
     <section class="filters-bar">

@@ -7,14 +7,13 @@ import './assets/main.css'
 
 const app = createApp(App)
 
+const savedToken = localStorage.getItem('userToken');
+if (savedToken) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
+}
 app.provide('api', api)
 
 app.use(router) 
 app.mount('#app') 
 
-const savedToken = localStorage.getItem('userToken');
 
-if (savedToken) {
-  // Si un token existe, on le remet directement dans Axios
-  api.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
-}

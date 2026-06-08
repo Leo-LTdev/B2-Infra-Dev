@@ -1,5 +1,5 @@
 const { Op } = require ('sequelize');
-const { Bien } = require('../models');
+const { Bien, User } = require('../models');
 const multer = require ('multer');
 const path = require('path');
 
@@ -74,6 +74,8 @@ exports.createBien = async (req, res) => {
 
 exports.getAllBiens = async (req,res) => {
     try {
+    
+    const userId = req.auth.userId;
     const { prixMin, prixMax, surfaceMin, surfaceMax, lieu, type, order } = req.query;
     const conditions = {};
 
@@ -104,7 +106,14 @@ exports.getAllBiens = async (req,res) => {
       order: orderValue
     });
 
-    res.json({ allBien });
+    const user = await User.findOne({ where: { id: userId } });
+
+    let isAgent = false;
+    if (user.role != 'user') isAgent = true;
+
+    console.log("user : ", isAgent);
+
+    res.json({ allBien, isAgent });
 
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur", error });
