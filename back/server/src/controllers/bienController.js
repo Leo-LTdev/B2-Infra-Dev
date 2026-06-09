@@ -121,14 +121,18 @@ exports.getAllBiens = async (req,res) => {
 }
 
 exports.getBienById = async (req, res) => {
-
   try {
     const bienId = req.params.id
   
     const bien = await Bien.findOne({where: { id: bienId }})
 
-    res.json({ bien });
-  } catch {
+    const userId = req.auth.userId;
+    const user = await User.findOne({ where: { id: userId } });
+    let isAgent = false;
+    if (user && user.role != 'user') isAgent = true;
+
+    res.json({ bien, isAgent }); 
+  } catch (error) {
     res.status(500).json({ message: "Erreur serveur", error });
   }
 }

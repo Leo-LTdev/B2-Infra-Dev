@@ -7,7 +7,7 @@ module.exports = (sequelize) => {
       autoIncrement: true,
       primaryKey: true
     },
-    property_id: {
+    bien_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       unique: true
@@ -34,7 +34,8 @@ module.exports = (sequelize) => {
         defaultValue: DataTypes.NOW
     }
   }, {
-    tableName: 'sales'
+    tableName: 'sales',
+    timestamps: false
   });
 
   return Sale;
