@@ -13,14 +13,14 @@
   const prixMax = ref<number| null>(null)
   const surfaceMin = ref<number| null>(null)
   const surfaceMax = ref<number| null>(null)
-  
+
   const api = inject<AxiosInstance>('api')
   const allBien = ref<any[]>([])
   const isAgent = ref<boolean>(false)
 
   const getAllBien = async () => {
     if (!api) {throw new Error('API instance not provided via injection')}
-    try { 
+    try {
       const response = await api.get('/bien', {
         params: {
           prixMin: prixMin.value || null,
@@ -32,10 +32,10 @@
           order: filterOrder.value || null,
         }
       })
-      
+
       allBien.value = response.data.allBien
       isAgent.value = response.data.isAgent
-      
+
     } catch (error) {
       console.error('Erreur lors de la récupération des biens :', error.response?.data?.message)
     }
@@ -45,12 +45,16 @@
     router.push('/addBien')
   }
 
+  function handleAssignAgency() {
+    router.push('/agency')
+  }
+
   watch([prixMin, prixMax, surfaceMin, surfaceMax, ville, filterType, filterOrder], () => {
     getAllBien()
   })
 
   onMounted(() => { getAllBien() })
-  
+
   const goToDetails = (id: number) => {
     router.push({ name: 'detail', params: { id: id } });
   };
@@ -66,7 +70,10 @@
   <div class="page-container">
     <header class="page-header">
       <h1>Ymmo</h1>
-      <button v-if="isAgent" class="header_btn" @click="handleNewBien">Ajouter une offre</Button>
+      <div v-if="isAgent" style="display: flex; gap: 15px;">
+        <button class="header_btn" @click="handleAssignAgency">Gérer les agences</button>
+        <button class="header_btn" @click="handleNewBien">Ajouter une offre</button>
+      </div>
     </header>
 
     <section class="filters-bar">
@@ -89,59 +96,59 @@
 
       <div class="filter-group">
         <label>Rechercher une ville</label>
-        <input 
-          v-model="ville" 
-          type="text" 
-          placeholder="Ex: Paris, Lyon..." 
+        <input
+          v-model="ville"
+          type="text"
+          placeholder="Ex: Paris, Lyon..."
         />
       </div>
 
       <div class="filter-group">
         <label>Prix Min</label>
-        <input 
-          v-model.number="prixMin" 
-          type="number" 
-          placeholder="0" 
+        <input
+          v-model.number="prixMin"
+          type="number"
+          placeholder="0"
         />
       </div>
 
       <div class="filter-group">
         <label>Prix Max</label>
-        <input 
-          v-model.number="prixMax" 
-          type="number" 
-          placeholder="250000" 
+        <input
+          v-model.number="prixMax"
+          type="number"
+          placeholder="250000"
         />
       </div>
 
       <div class="filter-group">
         <label>Surface Min</label>
-        <input 
-          v-model.number="surfaceMin" 
-          type="number" 
-          placeholder="0" 
+        <input
+          v-model.number="surfaceMin"
+          type="number"
+          placeholder="0"
         />
       </div>
 
       <div class="filter-group">
         <label>Surface Max</label>
-        <input 
-          v-model.number="surfaceMax" 
-          type="number" 
-          placeholder="250" 
+        <input
+          v-model.number="surfaceMax"
+          type="number"
+          placeholder="250"
         />
       </div>
     </section>
 
     <main>
       <p class="results-count">{{ allBien.length }} bien(s) trouvé(s)</p>
-      
+
       <div class="grid-biens">
-        <BienCard 
+        <BienCard
           v-for="bien in allBien"
           @click="goToDetails(bien.id)"
-          :key="bien.id" 
-          :bien="bien" 
+          :key="bien.id"
+          :bien="bien"
         />
       </div>
 
@@ -181,7 +188,7 @@
   /* Styles de la barre de filtres */
   .filters-bar {
     display: flex;
-  
+
     flex-wrap: wrap;
     gap: 20px;
     background: white;
